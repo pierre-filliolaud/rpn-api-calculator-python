@@ -1,0 +1,46 @@
+# Python cache
+__pycache__/
+*.py[cod]
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+
+# Poetry / venv
+.venv/
+poetry.lock
+
+# VS Code
+.vscode/
+
+# Environment
+.env
+.env.*
+
+# Logs
+*.log
+
+# Test coverage
+.coverage
+htmlcov/
+.cache/
+
+# pytest
+.pytest_cache/
+
+# IDE
+.idea/
+*.swp
+
+# Database & files
+*.sqlite3
+*.db
+*.csv
+
+# Docker artifacts
+*.tar
+*.pid
+
+# MacOS
+.DS_Store
