@@ -2,8 +2,8 @@
 FROM python:3.10-slim
 
 # Set environment variables
-ENV PYTHONDONTWRITEBYTECODE 1
-ENV PYTHONUNBUFFERED 1
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONUNBUFFERED=1
 
 # Set work directory
 WORKDIR /app
@@ -16,15 +16,14 @@ RUN apt-get update && apt-get install -y \
 # Install Poetry
 RUN pip install --upgrade pip && pip install poetry
 
-# Copy only requirements to cache dependencies
-COPY pyproject.toml poetry.lock* /app/
+# Copy only files needed to install dependencies
+COPY pyproject.toml poetry.lock* README.md /app/
 
 # Install dependencies
 RUN poetry config virtualenvs.create false && poetry install --no-interaction --no-ansi
 
-# Copy project
+# Copy project source
 COPY ./src /app/src
-COPY ./README.md /app/
 
 # Expose port
 EXPOSE 8000
