@@ -1,8 +1,9 @@
-import requests
-import pytest
+from fastapi.testclient import TestClient
+from rpn_api_calculator.main import app
 
-# Exemple de test d'intégration
+client = TestClient(app)
 
 def test_api_status():
-    response = requests.get('http://localhost:8000/')  # Assurez-vous que l'API est en cours d'exécution
+    response = client.get("/")
     assert response.status_code == 200
+    assert response.json() == {"message": "Welcome to the RPN API Calculator!"}
