@@ -42,7 +42,7 @@ poetry install
 
 ---
 
-## ▶️ Run the app locally
+## ▶️ Run the app locally (dev mode)
 
 ```bash
 # Activate virtual environment
@@ -52,8 +52,9 @@ poetry shell
 uvicorn rpn_api_calculator.main:app --reload --app-dir src
 ```
 
-Access the app at: [http://localhost:8000](http://localhost:8000)  
-Swagger UI: [http://localhost:8000/docs](http://localhost:8000/docs)
+Then open:  
+📍 [http://localhost:8000](http://localhost:8000)  
+📚 Swagger UI: [http://localhost:8000/docs](http://localhost:8000/docs)
 
 ---
 
@@ -65,23 +66,60 @@ poetry run pytest --cov
 
 ---
 
-## 🐳 Run with Docker
+## 🐳 Run the app with Docker (standalone)
+
+Build and run the container:
+```bash
+docker build -t rpn-api-calculator .
+docker run -p 8000:8000 rpn-api-calculator
+```
+
+---
+
+## 🐙 Run with Docker Compose (dev mode)
+
+Launch with live reload and volume mount:
 
 ```bash
 docker-compose up --build
 ```
 
+Then open in browser:
+- App: [http://localhost:8000](http://localhost:8000)
+- Docs: [http://localhost:8000/docs](http://localhost:8000/docs)
+
+---
+
+### 📦 docker-compose.yml (reference)
+
+```yaml
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    environment:
+      - ENVIRONMENT=development
+    volumes:
+      - .:/app
+    command: uvicorn src.rpn_api_calculator.main:app --host 0.0.0.0 --port 8000 --reload
+```
+
+✅ This setup mounts the local code into the container and uses `--reload` for development hot reload.
+
 ---
 
 ## 📤 Export CSV
 
-Use the API endpoint:
+To get all saved operations and results as CSV, call:
+
 ```
 GET /export
 ```
 
 ---
 
-## 🧾 License
-
-MIT
