@@ -81,7 +81,7 @@ docker run -p 8000:8000 rpn-api-calculator
 Launch with live reload and volume mount:
 
 ```bash
-docker-compose up --build
+docker-compose -f src/main/docker/docker-compose.yml up --build
 ```
 
 Then open in browser:

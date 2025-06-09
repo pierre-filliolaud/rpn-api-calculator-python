@@ -3,6 +3,7 @@ FROM python:3.10-slim
 # Environment settings
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
+ENV PYTHONPATH=/app/src/main/python
 
 # Working directory
 WORKDIR /app
@@ -24,4 +25,4 @@ RUN poetry config virtualenvs.create false && poetry install --no-interaction --
 EXPOSE 8000
 
 # Run the app
-CMD ["uvicorn", "src.rpn_api_calculator.main:app", "--host", "0.0.0.0", "--port", "8000"]
+CMD ["uvicorn", "rpn_api_calculator.main:app", "--host", "0.0.0.0", "--port", "8000"]
