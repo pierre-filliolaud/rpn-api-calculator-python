@@ -70,7 +70,7 @@ poetry run pytest --cov
 
 Build and run the container:
 ```bash
-docker build -t rpn-api-calculator .
+docker build -f ./src/main/docker/Dockerfile -t rpn-api-calculator .
 docker run -p 8000:8000 rpn-api-calculator
 ```
 
@@ -99,7 +99,7 @@ services:
   app:
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: src/main/docker/Dockerfile
     ports:
       - "8000:8000"
     environment:

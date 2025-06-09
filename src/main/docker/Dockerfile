@@ -14,7 +14,7 @@ RUN apt-get update && apt-get install -y build-essential && rm -rf /var/lib/apt/
 RUN pip install --upgrade pip && pip install poetry
 
 # Copy project code and metadata BEFORE install
-COPY ./src/main/python /app/src
+COPY ./src/main/python /app/src/main/python
 COPY pyproject.toml poetry.lock* README.md /app/
 
 # Install dependencies
