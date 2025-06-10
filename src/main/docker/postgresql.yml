@@ -1,0 +1,16 @@
+services:
+  rpn-postgresql:
+    image: postgres:14.2
+    container_name: rpn-postgresql
+    environment:
+      POSTGRES_USER: rpn
+      POSTGRES_PASSWORD: rpn
+      POSTGRES_DB: rpn_db
+      POSTGRES_HOST_AUTH_METHOD: trust
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+
+volumes:
+  postgres-data:
