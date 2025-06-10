@@ -116,6 +116,25 @@ Then open in browser:
 
 ---
 
+## 🐙 Run with Docker Compose (production mode)
+
+Launch the complete application with API and PostgreSQL database:
+
+```bash
+docker-compose -f src/main/docker/app.yml up
+```
+
+This will:
+- Start the API service using the Docker image
+- Start the PostgreSQL database
+- Set up the necessary environment variables and networking between services
+
+Then open in browser:
+- App: [http://localhost:8000](http://localhost:8000)
+- Docs: [http://localhost:8000/docs](http://localhost:8000/docs)
+
+---
+
 ### 📦 docker-compose.yml (reference)
 
 ```yaml
@@ -136,6 +155,50 @@ services:
 ```
 
 ✅ This setup mounts the local code into the container and uses `--reload` for development hot reload.
+
+### 📦 app.yml (reference)
+
+```yaml
+version: '3.8'
+
+services:
+  rpn-api:
+    build:
+      context: ../../..
+      dockerfile: ./src/main/docker/Dockerfile
+    ports:
+      - "8000:8000"
+    environment:
+      - ENVIRONMENT=production
+      - DATABASE_URL=postgresql+asyncpg://rpn:rpn@rpn-postgresql:5432/rpn_db
+    depends_on:
+      - rpn-postgresql
+    networks:
+      - rpn-network
+
+  rpn-postgresql:
+    image: postgres:14.2
+    container_name: rpn-postgresql
+    environment:
+      POSTGRES_USER: rpn
+      POSTGRES_PASSWORD: rpn
+      POSTGRES_DB: rpn_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    networks:
+      - rpn-network
+
+networks:
+  rpn-network:
+    driver: bridge
+
+volumes:
+  postgres-data:
+```
+
+✅ This setup runs both the API and PostgreSQL database in production mode with proper networking and data persistence.
 
 ---
 

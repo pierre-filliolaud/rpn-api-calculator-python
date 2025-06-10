@@ -1,0 +1,38 @@
+version: '3.8'
+
+services:
+  rpn-api:
+    build:
+      context: ../../..
+      dockerfile: ./src/main/docker/Dockerfile
+    ports:
+      - "8000:8000"
+    environment:
+      - ENVIRONMENT=production
+      - DATABASE_URL=postgresql+asyncpg://rpn:rpn@rpn-postgresql:5432/rpn_db
+    depends_on:
+      - rpn-postgresql
+    networks:
+      - rpn-network
+
+  rpn-postgresql:
+    image: postgres:14.2
+    container_name: rpn-postgresql
+    environment:
+      POSTGRES_USER: rpn
+      POSTGRES_PASSWORD: rpn
+      POSTGRES_DB: rpn_db
+      POSTGRES_HOST_AUTH_METHOD: trust
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    networks:
+      - rpn-network
+
+networks:
+  rpn-network:
+    driver: bridge
+
+volumes:
+  postgres-data:
