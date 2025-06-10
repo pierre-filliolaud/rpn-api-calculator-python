@@ -3,7 +3,7 @@ from rpn_api_calculator.main import app
 
 client = TestClient(app)
 
-def test_api_status():
-    response = client.get("/")
+def test_api_health():
+    response = client.get("/api/health")
     assert response.status_code == 200
-    assert response.json() == {"message": "Welcome to the RPN API Calculator!"}
+    assert response.json() == {"status": "ok"}
