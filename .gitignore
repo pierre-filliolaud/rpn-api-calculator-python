@@ -44,3 +44,6 @@ htmlcov/
 
 # MacOS
 .DS_Store
+
+# UI
+src/main/webapp/node_modules/

@@ -11,6 +11,7 @@ It stores operations in a database, supports exporting results to CSV, and is co
 - ✅ Store operations and results in a database
 - ✅ Export data to CSV
 - ✅ REST API powered by FastAPI
+- ✅ React UI for easy interaction
 - ✅ Docker & Docker Compose ready
 
 ---
@@ -19,12 +20,19 @@ It stores operations in a database, supports exporting results to CSV, and is co
 
 ```
 src/
-└── rpn_api_calculator/
-    ├── main.py           # FastAPI app
-    ├── api/              # Routes
-    ├── services/         # RPN logic
-    ├── db/               # Database models and session
-tests/                    # Pytest unit tests
+├── main/
+│   ├── python/
+│   │   └── rpn_api_calculator/
+│   │       ├── main.py           # FastAPI app
+│   │       ├── api/              # Routes
+│   │       ├── service/          # Business logic
+│   │       └── db/               # Database models and session
+│   ├── docker/                   # Docker configuration
+│   └── webapp/                   # React UI
+│       ├── public/               # Static files
+│       └── src/                  # React components
+└── test/
+    └── python/                   # Pytest unit and integration tests
 ```
 
 ---
@@ -44,6 +52,8 @@ poetry install
 
 ## ▶️ Run the app locally (dev mode)
 
+### Backend API
+
 ```bash
 # Activate virtual environment
 poetry shell
@@ -55,6 +65,22 @@ uvicorn rpn_api_calculator.main:app --reload --app-dir src
 Then open:  
 📍 [http://localhost:8000](http://localhost:8000)  
 📚 Swagger UI: [http://localhost:8000/docs](http://localhost:8000/docs)
+
+### React UI
+
+```bash
+# Navigate to the webapp directory
+cd src/main/webapp
+
+# Install dependencies
+npm install
+
+# Start the development server
+npm start
+```
+
+Then open:  
+🖥️ [http://localhost:3000](http://localhost:3000)
 
 ---
 
@@ -123,3 +149,35 @@ GET /export
 
 ---
 
+## 💻 React UI
+
+The project includes a web-based React UI for interacting with the RPN Calculator API:
+
+### Features
+
+- Simple, intuitive interface for entering RPN expressions
+- Real-time validation and error handling
+- Responsive design with Tailwind CSS
+- Displays calculation results
+
+### How it works
+
+1. User enters an RPN expression (e.g., "3 4 +")
+2. The expression is validated and evaluated locally
+3. The expression and result are sent to the API
+4. The result is displayed to the user
+
+### API Integration
+
+The UI makes POST requests to the `/api/calculations/` endpoint with the following payload:
+
+```json
+{
+  "expression": "3 4 +",
+  "result": 7
+}
+```
+
+For more details, see the [webapp README](src/main/webapp/README.md).
+
+---
