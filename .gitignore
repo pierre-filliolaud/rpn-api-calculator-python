@@ -46,5 +46,6 @@ htmlcov/
 .DS_Store
 
 # UI
-src/main/webapp/node_modules/
+node_modules/
+/package-lock.json
 /src/main/webapp/package-lock.json

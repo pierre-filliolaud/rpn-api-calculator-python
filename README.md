@@ -69,18 +69,17 @@ Then open:
 ### React UI
 
 ```bash
-# Navigate to the webapp directory
-cd src/main/webapp
-
-# Install dependencies
+# Install dependencies (from project root)
 npm install
 
-# Start the development server
+# Start the development server (from project root)
 npm start
 ```
 
 Then open:  
 🖥️ [http://localhost:3000](http://localhost:3000)
+
+> Note: The npm commands can now be run from the project root directory. The node_modules directory is also located at the root level.
 
 ---
 
