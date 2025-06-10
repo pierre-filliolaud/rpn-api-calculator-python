@@ -48,3 +48,5 @@ htmlcov/
 # UI
 src/main/webapp/node_modules/
 /src/main/webapp/package-lock.json
+/node_modules
+/package-lock.json
