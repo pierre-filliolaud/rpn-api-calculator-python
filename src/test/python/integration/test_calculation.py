@@ -131,3 +131,33 @@ def test_list_calculations():
     expressions = [calc["expression"] for calc in data]
     assert test_calculation["expression"] in expressions
     assert updated_calculation["expression"] in expressions
+
+def test_export_calculations():
+    # Create a few calculations to ensure we have data to export
+    client.post("/api/calculations/", json=test_calculation)
+    client.post("/api/calculations/", json=updated_calculation)
+
+    # Get the export
+    response = client.get("/api/calculations/export")
+
+    # Check status code
+    assert response.status_code == 200
+
+    # Check headers
+    assert "attachment; filename=calculations.csv" in response.headers["content-disposition"]
+    assert response.headers["content-type"] == "text/csv"
+
+    # Check CSV content
+    content = response.content.decode('utf-8')
+    lines = content.strip().split('\n')
+
+    # Check header row (strip any carriage returns for cross-platform compatibility)
+    assert lines[0].rstrip('\r') == "id,expression,result,created_at"
+
+    # Check that we have data rows
+    assert len(lines) > 1
+
+    # Check that our test calculations are in the CSV
+    expressions = [line.rstrip('\r').split(',')[1] for line in lines[1:]]
+    assert test_calculation["expression"] in expressions
+    assert updated_calculation["expression"] in expressions
