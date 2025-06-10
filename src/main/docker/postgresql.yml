@@ -1,9 +1,10 @@
-  engine-postgresql:
+services:
+  rpn-postgresql:
     image: postgres:14.2
     container_name: rpn-postgresql
     environment:
       POSTGRES_USER: rpn
-      POSTGRES_PASSWORD:
+      POSTGRES_PASSWORD: rpn
       POSTGRES_DB: rpn_db
       POSTGRES_HOST_AUTH_METHOD: trust
     ports:
