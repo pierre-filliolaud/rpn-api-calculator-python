@@ -3,7 +3,7 @@ name = "rpn-api-calculator-python"
 version = "0.1.0"
 description = ""
 authors = [
-    {name = "Pierre Filliolaud",email = "pierre.filliolaud@ormex.io"}
+    {name = "Pierre Filliolaud",email = "githug@filliolaud.net"}
 ]
 readme = "README.md"
 requires-python = ">=3.10"
@@ -22,8 +22,10 @@ build-backend = "poetry.core.masonry.api"
 [tool.poetry.group.dev.dependencies]
 pytest = "^8.4.0"
 pytest-cov = "^6.1.1"
+requests = "^2.32.3"
+httpx = "^0.28.1"
 
 [tool.poetry]
 packages = [
-    { include = "rpn_api_calculator", from = "src" }
+    { include = "rpn_api_calculator", from = "src/main/python" }
 ]
