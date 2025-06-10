@@ -1,7 +1,9 @@
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, Response
 from pydantic import BaseModel
 from uuid import UUID
 from datetime import datetime
+import csv
+from io import StringIO
 from sqlalchemy.ext.asyncio import AsyncSession
 from rpn_api_calculator.service.calculation_service import CalculationService
 from rpn_api_calculator.db.database import get_db
@@ -26,6 +28,37 @@ class CalculationRead(BaseModel):
 async def create_calculation(calculation: CalculationCreate, session: AsyncSession = Depends(get_db)):
     return await CalculationService.create(session, calculation.expression, calculation.result)
 
+@router.get('/calculations/export')
+async def export_calculations(session: AsyncSession = Depends(get_db)):
+    calculations = await CalculationService.get_all(session)
+
+    # Create CSV in memory
+    output = StringIO()
+    writer = csv.writer(output)
+
+    # Write header
+    writer.writerow(['id', 'expression', 'result', 'created_at'])
+
+    # Write data
+    for calc in calculations:
+        writer.writerow([
+            calc.id,
+            calc.expression,
+            calc.result,
+            calc.created_at.isoformat()
+        ])
+
+    # Prepare response
+    response = Response(content=output.getvalue())
+    response.headers["Content-Disposition"] = "attachment; filename=calculations.csv"
+    response.headers["Content-Type"] = "text/csv"
+
+    return response
+
+@router.get('/calculations/', response_model=list[CalculationRead])
+async def list_calculations(session: AsyncSession = Depends(get_db)):
+    return await CalculationService.get_all(session)
+
 @router.get('/calculations/{calculation_id}', response_model=CalculationRead)
 async def read_calculation(calculation_id: UUID, session: AsyncSession = Depends(get_db)):
     calculation = await CalculationService.get(session, calculation_id)
@@ -46,7 +79,3 @@ async def delete_calculation(calculation_id: UUID, session: AsyncSession = Depen
     if not deleted:
         raise HTTPException(status_code=404, detail='Calculation not found')
     return {'ok': True}
-
-@router.get('/calculations/', response_model=list[CalculationRead])
-async def list_calculations(session: AsyncSession = Depends(get_db)):
-    return await CalculationService.get_all(session)
