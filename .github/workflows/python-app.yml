@@ -35,6 +35,11 @@ jobs:
   docker:
     name: Docker Build & Push
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+      attestations: write
+      id-token: write
     needs: build
     if: github.ref == 'refs/heads/main'
 
